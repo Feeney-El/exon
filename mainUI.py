@@ -49,7 +49,11 @@ class Window(QWidget):
         self.all_server_speed_button.setFixedSize(190, 60)
         self.logs_button = QPushButton(text="日志")
         self.logs_button.setFixedSize(190, 60)
+        self.subscribe_button = QPushButton(text='查看订阅列表')
+        self.subscribe_button.setFixedSize(190, 60)
 
+        self.upgrade_subscribe = QPushButton(text='更新订阅')
+        self.upgrade_subscribe.setFixedSize(190, 60)
 
         self.providers_combo_box.addItems(proxies_json_reader.get_providers_name())
         self.provider_combo_box_current_text = str(self.providers_combo_box.currentText())
@@ -61,6 +65,10 @@ class Window(QWidget):
 
         button_layout.addWidget(self.logs_button)
         self.logs_button.clicked.connect(self.logs_window)
+
+        button_layout.addWidget(self.subscribe_button)
+        button_layout.addWidget(self.upgrade_subscribe)
+
 
 
 
