@@ -1,0 +1,56 @@
+{"type":"debug","payload":"[Process] mtalk.google.com from process /opt/google/chrome/chrome"}
+{"type":"info","payload":"[TCP] [::1]:48916 --\u003e mtalk.google.com:5228 match DomainKeyword(google) using 国外流量[Hong Kong-10]"}
+{"type":"debug","payload":"[Process] www.google.com from process /opt/google/chrome/chrome"}
+{"type":"info","payload":"[TCP] [::1]:52268 --\u003e www.google.com:443 match DomainKeyword(google) using 国外流量[Hong Kong-10]"}
+{"type":"debug","payload":"[Process] optimizationguide-pa.googleapis.com from process /opt/google/chrome/chrome"}
+{"type":"info","payload":"[TCP] [::1]:52270 --\u003e optimizationguide-pa.googleapis.com:443 match DomainKeyword(google) using 国外流量[Hong Kong-10]"}
+{"type":"debug","payload":"[Process] clients4.google.com from process /opt/google/chrome/chrome"}
+{"type":"info","payload":"[TCP] [::1]:43192 --\u003e clients4.google.com:443 match DomainKeyword(google) using 国外流量[Hong Kong-10]"}
+{"type":"debug","payload":"[Process] stackoverflow.com from process /opt/google/chrome/chrome"}
+{"type":"info","payload":"[TCP] [::1]:54588 --\u003e stackoverflow.com:443 match DomainSuffix(stackoverflow.com) using 国外流量[Hong Kong-10]"}
+{"type":"debug","payload":"[Process] gql.reddit.com from process /opt/google/chrome/chrome"}
+{"type":"info","payload":"[TCP] [::1]:54596 --\u003e gql.reddit.com:443 match DomainSuffix(reddit.com) using 国外流量[Hong Kong-10]"}
+{"type":"debug","payload":"[Process] alb.reddit.com from process /opt/google/chrome/chrome"}
+{"type":"info","payload":"[TCP] [::1]:54600 --\u003e alb.reddit.com:443 match DomainSuffix(reddit.com) using 国外流量[Hong Kong-10]"}
+{"type":"debug","payload":"[Process] alb.reddit.com from process /opt/google/chrome/chrome"}
+{"type":"debug","payload":"[Process] play.google.com from process /opt/google/chrome/chrome"}
+{"type":"info","payload":"[TCP] [::1]:54614 --\u003e alb.reddit.com:443 match DomainSuffix(reddit.com) using 国外流量[Hong Kong-10]"}
+{"type":"info","payload":"[TCP] [::1]:54630 --\u003e play.google.com:443 match DomainKeyword(google) using 国外流量[Hong Kong-10]"}
+{"type":"debug","payload":"[Process] v.redd.it from process /opt/google/chrome/chrome"}
+{"type":"info","payload":"[TCP] [::1]:54644 --\u003e v.redd.it:443 match DomainSuffix(redd.it) using 国外流量[Hong Kong-10]"}
+{"type":"debug","payload":"[Process] www.youtube.com from process /opt/google/chrome/chrome"}
+{"type":"info","payload":"[TCP] [::1]:54656 --\u003e www.youtube.com:443 match DomainSuffix(youtube.com) using 国外流量[Hong Kong-10]"}
+{"type":"debug","payload":"[Process] external-preview.redd.it from process /opt/google/chrome/chrome"}
+{"type":"info","payload":"[TCP] [::1]:58610 --\u003e external-preview.redd.it:443 match DomainSuffix(redd.it) using 国外流量[Hong Kong-10]"}
+{"type":"debug","payload":"[Process] alb.reddit.com from process /opt/google/chrome/chrome"}
+{"type":"info","payload":"[TCP] [::1]:58622 --\u003e alb.reddit.com:443 match DomainSuffix(reddit.com) using 国外流量[Hong Kong-10]"}
+{"type":"debug","payload":"[Process] packaged-media.redd.it from process /opt/google/chrome/chrome"}
+{"type":"debug","payload":"[Process] packaged-media.redd.it from process /opt/google/chrome/chrome"}
+{"type":"debug","payload":"[Process] alb.reddit.com from process /opt/google/chrome/chrome"}
+{"type":"info","payload":"[TCP] [::1]:58638 --\u003e packaged-media.redd.it:443 match DomainSuffix(redd.it) using 国外流量[Hong Kong-10]"}
+{"type":"info","payload":"[TCP] [::1]:58640 --\u003e packaged-media.redd.it:443 match DomainSuffix(redd.it) using 国外流量[Hong Kong-10]"}
+{"type":"info","payload":"[TCP] [::1]:58648 --\u003e alb.reddit.com:443 match DomainSuffix(reddit.com) using 国外流量[Hong Kong-10]"}
+{"type":"debug","payload":"[Process] alb.reddit.com from process /opt/google/chrome/chrome"}
+{"type":"info","payload":"[TCP] [::1]:58658 --\u003e alb.reddit.com:443 match DomainSuffix(reddit.com) using 国外流量[Hong Kong-10]"}
+{"type":"debug","payload":"[Process] alb.reddit.com from process /opt/google/chrome/chrome"}
+{"type":"debug","payload":"[Process] alb.reddit.com from process /opt/google/chrome/chrome"}
+{"type":"info","payload":"[TCP] [::1]:58680 --\u003e alb.reddit.com:443 match DomainSuffix(reddit.com) using 国外流量[Hong Kong-10]"}
+{"type":"info","payload":"[TCP] [::1]:58670 --\u003e alb.reddit.com:443 match DomainSuffix(reddit.com) using 国外流量[Hong Kong-10]"}
+{"type":"debug","payload":"[Process] alb.reddit.com from process /opt/google/chrome/chrome"}
+{"type":"info","payload":"[TCP] [::1]:58692 --\u003e alb.reddit.com:443 match DomainSuffix(reddit.com) using 国外流量[Hong Kong-10]"}
+{"type":"debug","payload":"[Process] alb.reddit.com from process /opt/google/chrome/chrome"}
+{"type":"debug","payload":"[Process] alb.reddit.com from process /opt/google/chrome/chrome"}
+{"type":"info","payload":"[TCP] [::1]:58718 --\u003e alb.reddit.com:443 match DomainSuffix(reddit.com) using 国外流量[Hong Kong-10]"}
+{"type":"info","payload":"[TCP] [::1]:58706 --\u003e alb.reddit.com:443 match DomainSuffix(reddit.com) using 国外流量[Hong Kong-10]"}
+{"type":"debug","payload":"[Process] preview.redd.it from process /opt/google/chrome/chrome"}
+{"type":"debug","payload":"[Process] emoji.redditmedia.com from process /opt/google/chrome/chrome"}
+{"type":"info","payload":"[TCP] [::1]:58726 --\u003e preview.redd.it:443 match DomainSuffix(redd.it) using 国外流量[Hong Kong-10]"}
+{"type":"info","payload":"[TCP] [::1]:58730 --\u003e emoji.redditmedia.com:443 match DomainSuffix(redditmedia.com) using 国外流量[Hong Kong-10]"}
+{"type":"debug","payload":"[Process] oauth.reddit.com from process /opt/google/chrome/chrome"}
+{"type":"info","payload":"[TCP] [::1]:58740 --\u003e oauth.reddit.com:443 match DomainSuffix(reddit.com) using 国外流量[Hong Kong-10]"}
+{"type":"debug","payload":"[Process] b.thumbs.redditmedia.com from process /opt/google/chrome/chrome"}
+{"type":"info","payload":"[TCP] [::1]:58756 --\u003e b.thumbs.redditmedia.com:443 match DomainSuffix(redditmedia.com) using 国外流量[Hong Kong-10]"}
+{"type":"debug","payload":"[Process] styles.redditmedia.com from process /opt/google/chrome/chrome"}
+{"type":"info","payload":"[TCP] [::1]:58758 --\u003e styles.redditmedia.com:443 match DomainSuffix(redditmedia.com) using 国外流量[Hong Kong-10]"}
+{"type":"debug","payload":"[Process] mtalk.google.com from process /opt/google/chrome/chrome"}
+{"type":"info","payload":"[TCP] [::1]:35952 --\u003e mtalk.google.com:5228 match DomainKeyword(google) using 国外流量[Hong Kong-10]"}
