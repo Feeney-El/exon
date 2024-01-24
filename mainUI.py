@@ -2,9 +2,11 @@ import sys, clash_restful, proxies_json_reader, os, time, json
 from PyQt5 import QtCore, QtGui, QtWebSockets, QtNetwork
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import (
+    QSpacerItem,
     QApplication,
     QAction,
     QFormLayout,
+    QFrame,
     QLabel,
     QLineEdit,
     QWidget,
@@ -50,10 +52,13 @@ class Window(QWidget):
         self.logs_button = QPushButton(text="日志")
         self.logs_button.setFixedSize(190, 60)
         self.subscribe_button = QPushButton(text='查看订阅列表')
+
         self.subscribe_button.setFixedSize(190, 60)
 
-        self.upgrade_subscribe = QPushButton(text='更新订阅')
+        self.upgrade_subscribe = QPushButton(text='切换订阅')
         self.upgrade_subscribe.setFixedSize(190, 60)
+
+        self.subscribe_button.clicked.connect(self.subscribe_window)
 
         self.providers_combo_box.addItems(proxies_json_reader.get_providers_name())
         self.provider_combo_box_current_text = str(self.providers_combo_box.currentText())
@@ -68,9 +73,6 @@ class Window(QWidget):
 
         button_layout.addWidget(self.subscribe_button)
         button_layout.addWidget(self.upgrade_subscribe)
-
-
-
 
 
 
@@ -135,7 +137,9 @@ class Window(QWidget):
         self.l.show()
 
 
-
+    def subscribe_window(self):
+        self.sub = SubscribeInfoWindow()
+        self.sub.show()
 
 
 class SettingWindow(QWidget):
@@ -268,6 +272,44 @@ class LogsWindow(QWidget):
         print(type(message))
 
         self.logs_rich_text.append(message)
+
+
+class SubscribeInfoWindow(QWidget):
+
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("订阅")
+        self.setFixedSize(800, 600)
+        subscribe_layout = QVBoxLayout()
+        # add_sub_layout = QVBoxLayout()
+
+        self.setLayout(subscribe_layout)
+        self.subscribe_name_label = QLabel(text='订阅名称：')
+        self.subscribe_name_textbox = QLineEdit()
+        self.subscribe_link_label = QLabel(text='订阅链接：')
+        self.subscribe_link_textbox = QLineEdit()
+        self.add_subscribe_button = QPushButton(text="添加")
+        subscribe_layout.addWidget(self.subscribe_name_label)
+        subscribe_layout.addWidget(self.subscribe_name_textbox)
+        subscribe_layout.addWidget(self.subscribe_link_label)
+        subscribe_layout.addWidget(self.subscribe_link_textbox)
+
+        subscribe_layout.addWidget(self.add_subscribe_button)
+
+        self.space_region = QSpacerItem(800, 30)
+        subscribe_layout.addSpacerItem(self.space_region)
+
+
+        self.subscribe_list_label = QLabel(text="订阅列表")
+        self.subscribe_list = QListWidget()
+        self.update_subs = QPushButton(text="更新全部")
+        subscribe_layout.addWidget(self.subscribe_list_label)
+        subscribe_layout.addWidget(self.subscribe_list)
+        subscribe_layout.addWidget(self.update_subs)
+
+
+
+
 
 
 if __name__ == "__main__":
