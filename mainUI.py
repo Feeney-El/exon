@@ -1,4 +1,4 @@
-import sys, clash_restful, proxies_json_reader, os, time, json
+import sys, clash_restful, proxies_json_reader, os, time, json, subscribe_json
 from PyQt5 import QtCore, QtGui, QtWebSockets, QtNetwork
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import (
@@ -8,6 +8,7 @@ from PyQt5.QtWidgets import (
     QFormLayout,
     QFrame,
     QLabel,
+    QMessageBox,
     QLineEdit,
     QWidget,
     QTableView,
@@ -294,6 +295,10 @@ class SubscribeInfoWindow(QWidget):
         subscribe_layout.addWidget(self.subscribe_link_label)
         subscribe_layout.addWidget(self.subscribe_link_textbox)
 
+        self.msg = QMessageBox()
+
+        self.add_subscribe_button.clicked.connect(self.add_subscribe_name_and_link)
+
         subscribe_layout.addWidget(self.add_subscribe_button)
 
         self.space_region = QSpacerItem(800, 30)
@@ -307,8 +312,29 @@ class SubscribeInfoWindow(QWidget):
         subscribe_layout.addWidget(self.subscribe_list)
         subscribe_layout.addWidget(self.update_subs)
 
+    def add_subscribe_name_and_link(self):
 
+        sub_name = self.subscribe_name_textbox.text()
+        sub_link = self.subscribe_link_textbox.text()
 
+        add_success_or_false = subscribe_json.write_json(group_name=sub_name, group_link=sub_link)  # 0: false 1:success
+        if  add_success_or_false == 0:
+
+            self.msg.setIcon(QMessageBox.Critical)
+            self.msg.setText("是不是有重复？？？")
+
+            self.msg.setWindowTitle("Error")
+            self.msg.exec_()
+
+        else:
+            # self.msg = QMessageBox()
+            self.msg.setIcon(QMessageBox.Information)
+            self.msg.setText("添加成功")
+            self.msg.setWindowTitle("success")
+            self.msg.exec_()
+
+        self.subscribe_link_textbox.clear()
+        self.subscribe_name_textbox.clear()
 
 
 
