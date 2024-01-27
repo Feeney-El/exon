@@ -308,6 +308,10 @@ class SubscribeInfoWindow(QWidget):
         self.subscribe_list_label = QLabel(text="订阅列表")
         self.subscribe_list = QListWidget()
         self.update_subs = QPushButton(text="更新全部")
+
+
+        self.subscribe_list.addItems(subscribe_json.read_subscribe_json())
+
         subscribe_layout.addWidget(self.subscribe_list_label)
         subscribe_layout.addWidget(self.subscribe_list)
         subscribe_layout.addWidget(self.update_subs)
@@ -335,6 +339,39 @@ class SubscribeInfoWindow(QWidget):
 
         self.subscribe_link_textbox.clear()
         self.subscribe_name_textbox.clear()
+
+
+    def subscribe_right_click_menu(self):
+
+        subscribe_pop_menu = QMenu()
+        set_as_active = subscribe_pop_menu.addAction('设为活动订阅')
+        delete_subscribe = subscribe_pop_menu.addAction('删除该订阅分组')
+        upgrade_current_subscribe = subscribe_pop_menu.addAction("更新该订阅")
+
+        user_choice_in_subscribe_context_menu = subscribe_pop_menu.exec_(self.subscribe_list.mapToGlobal(point))
+
+        #TODO
+        if user_choice_in_subscribe_context_menu == set_as_active:
+            subscribe_context_menu_combobox_index = self.subscribe_list.currentRow()
+            print(subscribe_context_menu_combobox_index)
+
+            clash_restful.ApiRequest.change_proxy(group_name=context_menu_combobox_content
+                                                  , server_name=context_menu_list_widgets_content)
+
+        elif user_choice_in_subscribe_context_menu == delete_subscribe:
+            context_menu_list_widgets_content = self.servers_list.currentItem().text()
+            delay, meanDelay = clash_restful.ApiRequest.speed(context_menu_list_widgets_content)
+            print("22222313131313313131313", delay, meanDelay)
+
+            select_item = self.servers_list.selectedItems()
+            for i in select_item:
+                print(i.text())
+                i.setText(i.text() + ' (%sms)' % delay)
+
+
+
+
+
 
 
 

@@ -26,11 +26,26 @@ def write_json(group_name='345', group_link=''):
 
 
 
+def read_subscribe_json(file_name="subscribe_json.json") -> list:
+
+    subscribe_dict = json.load(open(file_name))
+    tuple_items = subscribe_dict.items()
+    print(list(tuple_items))
+
+    list_string = []
+    for i in tuple_items:
+        tuple_to_string = "".join(str(i))
+        list_string.append(tuple_to_string)
+
+
+    print(list_string)
+    return list_string
+
 if __name__ == '__main__':
-    write_json(group_name='fl2y123in2g', group_link='')
-    print(write_json(group_name='fl2y11111ing', group_link=''))
+    # write_json(group_name='fl2y123in2g', group_link='')
+    # print(write_json(group_name='fl2y11111ing', group_link=''))
 
-
+    read_subscribe_json()
 
 
 
