@@ -1,4 +1,4 @@
-import sys, clash_restful, proxies_json_reader, os, time, json, subscribe_json
+import sys, clash_restful, proxies_json_reader, os, time, json, subscribe_json, subscribe_file_operation, change_system_proxy_settings
 from PyQt5 import QtCore, QtGui, QtWebSockets, QtNetwork
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import (
@@ -32,6 +32,8 @@ class Window(QWidget):
         # self.start_log()
 
         super().__init__()
+
+        change_system_proxy_settings.ChangeSystemProxiesSetting().run()
         self.setWindowTitle("PyV2clash")
         global_layout = QHBoxLayout()
         self.setLayout(global_layout)
@@ -142,6 +144,9 @@ class Window(QWidget):
         self.sub = SubscribeInfoWindow()
         self.sub.show()
 
+    def closeEvent(self, event) -> None:        # rewrite father method
+        change_system_proxy_settings.ChangeSystemProxiesSetting().recover()
+
 
 class SettingWindow(QWidget):
 
@@ -229,6 +234,9 @@ class SettingWindow(QWidget):
         lan_mode = True if lan_select == 0 else False
         clash_restful.ApiRequest.change_allow_lan(change_to=lan_mode)
 
+
+    # def
+
 class LogsWindow(QWidget):
 
     def __init__(self):
@@ -309,6 +317,8 @@ class SubscribeInfoWindow(QWidget):
         self.subscribe_list = QListWidget()
         self.update_subs = QPushButton(text="更新全部")
 
+        self.subscribe_list.setContextMenuPolicy(Qt.CustomContextMenu)
+        self.subscribe_list.customContextMenuRequested[QtCore.QPoint].connect(self.subscribe_right_click_menu)
 
         self.subscribe_list.addItems(subscribe_json.read_subscribe_json())
 
@@ -341,7 +351,7 @@ class SubscribeInfoWindow(QWidget):
         self.subscribe_name_textbox.clear()
 
 
-    def subscribe_right_click_menu(self):
+    def subscribe_right_click_menu(self, point):
 
         subscribe_pop_menu = QMenu()
         set_as_active = subscribe_pop_menu.addAction('设为活动订阅')
@@ -354,9 +364,10 @@ class SubscribeInfoWindow(QWidget):
         if user_choice_in_subscribe_context_menu == set_as_active:
             subscribe_context_menu_combobox_index = self.subscribe_list.currentRow()
             print(subscribe_context_menu_combobox_index)
+            subscribe_file_name = subscribe_json.read_subscribe_json_tuple_list()[subscribe_context_menu_combobox_index][0]
+            # print("123aaaaa2222", subscribe_file_name)
+            subscribe_file_operation.ActivateSubscribe().active_config(file_name=subscribe_file_name + ".yaml")
 
-            clash_restful.ApiRequest.change_proxy(group_name=context_menu_combobox_content
-                                                  , server_name=context_menu_list_widgets_content)
 
         elif user_choice_in_subscribe_context_menu == delete_subscribe:
             context_menu_list_widgets_content = self.servers_list.currentItem().text()
@@ -369,7 +380,13 @@ class SubscribeInfoWindow(QWidget):
                 i.setText(i.text() + ' (%sms)' % delay)
 
 
-
+        if user_choice_in_subscribe_context_menu == upgrade_current_subscribe:
+            subscribe_context_menu_combobox_index = self.subscribe_list.currentRow()
+            print(subscribe_context_menu_combobox_index)
+            save_file_name = subscribe_json.read_subscribe_json_tuple_list()[subscribe_context_menu_combobox_index][0]
+            subscribe_link = subscribe_json.read_subscribe_json_tuple_list()[subscribe_context_menu_combobox_index][1]
+            # print("123aaaaa2222", subscribe_file_name)
+            subscribe_file_operation.ActivateSubscribe().download_subs(link=subscribe_link, saving_name=save_file_name)
 
 
 
