@@ -41,6 +41,18 @@ def read_subscribe_json(file_name="subscribe_json.json") -> list:
     print(list_string)
     return list_string
 
+
+
+def read_subscribe_json_tuple_list(file_name="subscribe_json.json") -> list:
+
+    subscribe_dict = json.load(open(file_name))
+    tuple_items = subscribe_dict.items()
+    print(list(tuple_items))
+
+
+
+    return list(tuple_items)
+
 if __name__ == '__main__':
     # write_json(group_name='fl2y123in2g', group_link='')
     # print(write_json(group_name='fl2y11111ing', group_link=''))
