@@ -2,3 +2,5 @@
 *.txt
 *.yaml
 venv/
+clash_bin/
+.pyc
