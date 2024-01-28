@@ -36,10 +36,11 @@ class ApiRequest():
 
 
     def change_proxy(group_name="ChatGPT及其他AI", server_name="Hong Kong-05"):
-        group_name_url_code = urllib.parse.quote_plus(group_name)
-
+        group_name_url_code = urllib.parse.quote(group_name, safe='/', encoding=None, errors=None)
+        # group_name_url_code  = str(group_name_url_code).replace("+", "%20")
+        print(type(group_name_url_code))
         data = {"name": server_name}
-        print(group_name_url_code)
+        print('1', group_name_url_code)
         resp = requests.put(
             url='http://127.0.0.1:9090/proxies/%s' % group_name_url_code,
             data=json.dumps(data)

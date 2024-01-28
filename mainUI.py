@@ -1,6 +1,6 @@
-import sys, clash_restful, proxies_json_reader, os, time, json, subscribe_json, subscribe_file_operation, change_system_proxy_settings
+import sys, clash_restful, proxies_json_reader, os, time, json, subscribe_json, subscribe_file_operation, change_system_proxy_settings, group_combobox_list_v2
 from PyQt5 import QtCore, QtGui, QtWebSockets, QtNetwork
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, pyqtSignal, QProcess
 from PyQt5.QtWidgets import (
     QSpacerItem,
     QApplication,
@@ -25,13 +25,14 @@ from PyQt5.QtWidgets import (
 
 
 class Window(QWidget):
+
+
     def __init__(self):
 
-        # if os.path.exists('file.txt'):
-            # os.remove('file.txt')
-        # self.start_log()
-
         super().__init__()
+
+        self.p_clash = QProcess()
+        self.p_clash.start("./clash_bin/clash-linux-amd64-v3", ['-d', './clash_bin'])
 
         change_system_proxy_settings.ChangeSystemProxiesSetting().run()
         self.setWindowTitle("PyV2clash")
@@ -46,6 +47,7 @@ class Window(QWidget):
 
         self.providers_combo_box = QComboBox()
 
+
         self.run_button = QPushButton(text="Run")
         self.run_button.setFixedSize(190, 60)
         self.setting_button = QPushButton(text="设置")
@@ -58,12 +60,12 @@ class Window(QWidget):
 
         self.subscribe_button.setFixedSize(190, 60)
 
-        self.upgrade_subscribe = QPushButton(text='切换订阅')
-        self.upgrade_subscribe.setFixedSize(190, 60)
+        # self.upgrade_subscribe = QPushButton(text='切换订阅')
+        # self.upgrade_subscribe.setFixedSize(190, 60)
 
         self.subscribe_button.clicked.connect(self.subscribe_window)
 
-        self.providers_combo_box.addItems(proxies_json_reader.get_providers_name())
+        self.providers_combo_box.addItems(list(group_combobox_list_v2.get_providers_info().keys()))
         self.provider_combo_box_current_text = str(self.providers_combo_box.currentText())
         # servers_show_in_Qlist = proxies_json_reader.get_server_list_in_provider_group(provider_combo_box_current_text)
 
@@ -75,7 +77,7 @@ class Window(QWidget):
         self.logs_button.clicked.connect(self.logs_window)
 
         button_layout.addWidget(self.subscribe_button)
-        button_layout.addWidget(self.upgrade_subscribe)
+        # button_layout.addWidget(self.upgrade_subscribe)
 
 
 
@@ -144,9 +146,15 @@ class Window(QWidget):
         self.sub = SubscribeInfoWindow()
         self.sub.show()
 
+
+    def receive_signals_from_subscribe_window(self):
+        self.providers_combo_box.clear()
+        self.providers_combo_box.addItems(proxies_json_reader.get_providers_name())
+
+
     def closeEvent(self, event) -> None:        # rewrite father method
         change_system_proxy_settings.ChangeSystemProxiesSetting().recover()
-
+        self.p_clash.kill()
 
 class SettingWindow(QWidget):
 
@@ -285,6 +293,7 @@ class LogsWindow(QWidget):
 
 class SubscribeInfoWindow(QWidget):
 
+    subscribe_signal = QtCore.pyqtSignal(int)
     def __init__(self):
         super().__init__()
         self.setWindowTitle("订阅")
@@ -354,19 +363,20 @@ class SubscribeInfoWindow(QWidget):
     def subscribe_right_click_menu(self, point):
 
         subscribe_pop_menu = QMenu()
-        set_as_active = subscribe_pop_menu.addAction('设为活动订阅')
+        set_as_active = subscribe_pop_menu.addAction('设为活动订阅(下次启动生效)')
         delete_subscribe = subscribe_pop_menu.addAction('删除该订阅分组')
         upgrade_current_subscribe = subscribe_pop_menu.addAction("更新该订阅")
 
         user_choice_in_subscribe_context_menu = subscribe_pop_menu.exec_(self.subscribe_list.mapToGlobal(point))
 
-        #TODO
         if user_choice_in_subscribe_context_menu == set_as_active:
             subscribe_context_menu_combobox_index = self.subscribe_list.currentRow()
             print(subscribe_context_menu_combobox_index)
             subscribe_file_name = subscribe_json.read_subscribe_json_tuple_list()[subscribe_context_menu_combobox_index][0]
             # print("123aaaaa2222", subscribe_file_name)
             subscribe_file_operation.ActivateSubscribe().active_config(file_name=subscribe_file_name + ".yaml")
+
+
 
 
         elif user_choice_in_subscribe_context_menu == delete_subscribe:
