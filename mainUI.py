@@ -121,6 +121,7 @@ class Window(QWidget):
 
         user_choice_in_context_menu = popMenu.exec_(self.servers_list.mapToGlobal(point))
         if user_choice_in_context_menu == set_as_running:
+            context_menu_combobox_index = self.providers_combo_box.currentIndex()
             context_menu_combobox_content = self.providers_combo_box.currentText()
             context_menu_list_widgets_content = self.servers_list.currentItem().text()
             print(context_menu_list_widgets_content, context_menu_combobox_content)
