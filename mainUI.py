@@ -48,8 +48,8 @@ class Window(QWidget):
         self.providers_combo_box = QComboBox()
 
 
-        self.run_button = QPushButton(text="Run")
-        self.run_button.setFixedSize(190, 60)
+        self.group_type = QLabel(text='')
+        self.group_type.setFixedSize(190, 60)
         self.setting_button = QPushButton(text="设置")
         self.setting_button.setFixedSize(190, 60)
         self.all_server_speed_button = QPushButton(text="全部节点测速")
@@ -70,7 +70,7 @@ class Window(QWidget):
         # servers_show_in_Qlist = proxies_json_reader.get_server_list_in_provider_group(provider_combo_box_current_text)
 
         list_layout.addWidget(self.providers_combo_box)
-        button_layout.addWidget(self.run_button)
+        button_layout.addWidget(self.group_type)
         button_layout.addWidget(self.setting_button)
 
         button_layout.addWidget(self.logs_button)
@@ -80,7 +80,7 @@ class Window(QWidget):
         # button_layout.addWidget(self.upgrade_subscribe)
 
 
-
+        self.providers_combo_box.currentIndexChanged.connect(self.refresh_group_label)
 
         button_layout.addWidget(self.all_server_speed_button)
         self.setting_button.clicked.connect(self.setting_window)
@@ -95,6 +95,14 @@ class Window(QWidget):
 
     
         list_layout.addWidget(self.servers_list)
+        self.group_type.setText(group_combobox_list_v2.get_providers_info()[self.providers_combo_box.currentText()])
+        self.group_type.setAlignment(Qt.AlignCenter)
+
+    def refresh_group_label(self):
+        sel_option = self.providers_combo_box.currentText()
+        # self.group_type.clear()
+        group_label_text = group_combobox_list_v2.get_providers_info()[sel_option]
+        self.group_type.setText(group_label_text)
 
 
     def refresh_servers_in_list(self):
@@ -155,6 +163,7 @@ class Window(QWidget):
     def closeEvent(self, event) -> None:        # rewrite father method
         change_system_proxy_settings.ChangeSystemProxiesSetting().recover()
         self.p_clash.kill()
+
 
 class SettingWindow(QWidget):
 
