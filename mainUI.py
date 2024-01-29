@@ -1,4 +1,4 @@
-import sys, clash_restful, proxies_json_reader, os, time, json, subscribe_json, subscribe_file_operation, change_system_proxy_settings, group_combobox_list_v2
+import sys, write_log, clash_restful, proxies_json_reader, os, time, json, subscribe_json, subscribe_file_operation, change_system_proxy_settings, group_combobox_list_v2
 from PyQt5 import QtCore, QtGui, QtWebSockets, QtNetwork
 from PyQt5.QtCore import Qt, pyqtSignal, QProcess
 from PyQt5.QtWidgets import (
@@ -32,6 +32,8 @@ class Window(QWidget):
 
         super().__init__()
 
+
+
         self.p_clash = QProcess()
         self.p_clash.start("./clash_bin/clash-linux-amd64-v3", ['-d', './clash_bin'])
 
@@ -50,6 +52,8 @@ class Window(QWidget):
 
 
         self.group_type = QLabel(text='')
+        self.group_type.setWordWrap(True)
+
         self.group_type.setFixedSize(190, 60)
         self.setting_button = QPushButton(text="设置")
         self.setting_button.setFixedSize(190, 60)
@@ -103,7 +107,9 @@ class Window(QWidget):
         sel_option = self.providers_combo_box.currentText()
         # self.group_type.clear()
         group_label_text = group_combobox_list_v2.get_providers_info()[sel_option]
-        self.group_type.setText(group_label_text)
+
+        self.group_type.setText("group type: " + group_label_text)
+        self.group_type.setStyleSheet("border : 2px solid black;")
 
 
     def refresh_servers_in_list(self):
@@ -121,13 +127,24 @@ class Window(QWidget):
         see_see_speed = popMenu.addAction('测个速看看')
 
         user_choice_in_context_menu = popMenu.exec_(self.servers_list.mapToGlobal(point))
+
+        # TODO
         if user_choice_in_context_menu == set_as_running:
-            context_menu_combobox_index = self.providers_combo_box.currentIndex()
+            context_menu_combobox_index = self.servers_list.currentRow()
+
             context_menu_combobox_content = self.providers_combo_box.currentText()
+            write_log.common_info('From mainUI: menu index is %d' % int(context_menu_combobox_index))
+            context_menu_list_content_v2 = proxies_json_reader.get_server_list_in_provider_group(provider_group_name=context_menu_combobox_content)[context_menu_combobox_index]
+
             context_menu_list_widgets_content = self.servers_list.currentItem().text()
             print(context_menu_list_widgets_content, context_menu_combobox_content)
+
+
             clash_restful.ApiRequest.change_proxy(group_name=context_menu_combobox_content
-                                            , server_name=context_menu_list_widgets_content)
+                                            , server_name=context_menu_list_content_v2)
+
+            write_log.common_info("From mainUI: group name is %s" % context_menu_combobox_content)
+            write_log.common_info("from mainUI: the server user chosen in this group name is %s" % context_menu_list_content_v2)
 
         elif user_choice_in_context_menu == see_see_speed:
             context_menu_list_widgets_content = self.servers_list.currentItem().text()
@@ -138,6 +155,12 @@ class Window(QWidget):
             for i in select_item:
                 print(i.text())
                 i.setText(i.text() + ' (%sms)' % delay)
+
+    # TODO
+    def all_proxies_delay(self):
+        pass
+
+
 
 
     def setting_window(self):
@@ -414,8 +437,10 @@ class SubscribeInfoWindow(QWidget):
 
 
 if __name__ == "__main__":
+    change_system_proxy_settings.ChangeSystemProxiesSetting().recover()
     app = QApplication(sys.argv)
     window = Window()
+
     window.resize(800, 600)
     window.show()
     sys.exit(app.exec_())
