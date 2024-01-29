@@ -1,4 +1,6 @@
 *.json
+.idea/
+.__pycache__/
 *.txt
 *.yaml
 venv/
