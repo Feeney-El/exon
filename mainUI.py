@@ -35,7 +35,7 @@ class Window(QWidget):
 
 
         self.p_clash = QProcess()
-        self.p_clash.start("./clash_bin/clash-linux-amd64-v3", ['-d', './clash_bin'])
+        self.p_clash.start("./clash_bin/clash-win64.exe", ['-d', './clash_bin'])
 
         change_system_proxy_settings.ChangeSystemProxiesSetting().run()
         self.setWindowTitle("PyV2clash")

@@ -99,3 +99,13 @@
 2024-01-29 15:18:33  connectionpool.py  _make_request  DEBUG  https://a583207ffa6f-apiv1.v27qae.com:443 "GET /flydsubal/ztbeuo3xoto9r0lz?clash=1&extend=1 HTTP/1.1" 200 677901
 2024-01-29 15:18:47  group_combobox_list_v2.py  get_providers_info  INFO  GET http://localhost:9090/proxies the status code is 200
 2024-01-29 15:18:47  group_combobox_list_v2.py  get_providers_info  INFO  GET http://localhost:9090/proxies the status code is 200
+2024-02-01 04:17:09  group_combobox_list_v2.py  get_providers_info  INFO  GET http://localhost:9090/proxies the status code is 200
+2024-02-01 04:17:13  group_combobox_list_v2.py  get_providers_info  INFO  GET http://localhost:9090/proxies the status code is 200
+2024-02-01 04:20:28  group_combobox_list_v2.py  get_providers_info  INFO  GET http://localhost:9090/proxies the status code is 200
+2024-02-01 04:20:32  group_combobox_list_v2.py  get_providers_info  INFO  GET http://localhost:9090/proxies the status code is 200
+2024-02-01 04:54:52  group_combobox_list_v2.py  get_providers_info  INFO  GET http://localhost:9090/proxies the status code is 200
+2024-02-01 04:54:56  group_combobox_list_v2.py  get_providers_info  INFO  GET http://localhost:9090/proxies the status code is 200
+2024-02-01 04:55:20  group_combobox_list_v2.py  get_providers_info  INFO  GET http://localhost:9090/proxies the status code is 200
+2024-02-01 04:55:24  group_combobox_list_v2.py  get_providers_info  INFO  GET http://localhost:9090/proxies the status code is 200
+2024-02-01 04:55:36  group_combobox_list_v2.py  get_providers_info  INFO  GET http://localhost:9090/proxies the status code is 200
+2024-02-01 04:55:40  group_combobox_list_v2.py  get_providers_info  INFO  GET http://localhost:9090/proxies the status code is 200
