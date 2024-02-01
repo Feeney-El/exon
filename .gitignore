@@ -5,6 +5,7 @@ __pycache__/
 *.yaml
 *.yml
 **/venv/
+venv/
 *.log
 clash_bin/
 *.pyc
