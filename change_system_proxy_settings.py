@@ -13,6 +13,7 @@ class ChangeSystemProxiesSetting():
 
 
 
+
     def __change_ftp(self):
         subprocess.run(['gsettings'
                            , 'set'
