@@ -1,9 +1,9 @@
 *.json
 .idea/
-.__pycache__/
+__pycache__/
 *.txt
 *.yaml
 venv/
-.log
+*.log
 clash_bin/
-.pyc
+*.pyc
