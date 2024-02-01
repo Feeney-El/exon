@@ -3,7 +3,8 @@
 __pycache__/
 *.txt
 *.yaml
-venv/
+*.yml
+**venv/
 *.log
 clash_bin/
 *.pyc
