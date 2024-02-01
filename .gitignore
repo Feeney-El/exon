@@ -4,7 +4,7 @@ __pycache__/
 *.txt
 *.yaml
 *.yml
-**venv/
+**/venv/
 *.log
 clash_bin/
 *.pyc
