@@ -1,8 +1,9 @@
-import sys, write_log, clash_restful, proxies_json_reader, os, time, json, subscribe_json, subscribe_file_operation, change_system_proxy_settings, group_combobox_list_v2
+import sys, write_log, clash_restful, clash_restful_requests, proxies_json_reader, os, time, json, subscribe_json, subscribe_file_operation, change_system_proxy_settings, group_combobox_list_v2
 from PyQt5 import QtCore, QtGui, QtWebSockets, QtNetwork
-from PyQt5.QtCore import Qt, pyqtSignal, QProcess
+from PyQt5.QtCore import Qt, QProcess
 from PyQt5.QtWidgets import (
     QSpacerItem,
+    QListWidgetItem,
     QApplication,
     QAction,
     QFormLayout,
@@ -20,7 +21,6 @@ from PyQt5.QtWidgets import (
     QCheckBox,
     QComboBox,
     QMenu,
-    QStackedLayout
 )
 
 
@@ -32,7 +32,7 @@ class Window(QWidget):
 
         super().__init__()
 
-
+        self.setWindowIcon(QtGui.QIcon('logo.png'))
 
         self.p_clash = QProcess()
         self.p_clash.start("./clash_bin/clash-linux-amd64-v3", ['-d', './clash_bin'])
@@ -98,7 +98,9 @@ class Window(QWidget):
 
         self.refresh_servers_in_list()
 
-    
+
+        self.all_server_speed_button.clicked.connect(self.all_proxies_delay_v3)
+
         list_layout.addWidget(self.servers_list)
         self.group_type.setText(group_combobox_list_v2.get_providers_info()[self.providers_combo_box.currentText()])
         self.group_type.setAlignment(Qt.AlignCenter)
@@ -128,7 +130,6 @@ class Window(QWidget):
 
         user_choice_in_context_menu = popMenu.exec_(self.servers_list.mapToGlobal(point))
 
-        # TODO
         if user_choice_in_context_menu == set_as_running:
             context_menu_combobox_index = self.servers_list.currentRow()
 
@@ -148,7 +149,7 @@ class Window(QWidget):
 
         elif user_choice_in_context_menu == see_see_speed:
             context_menu_list_widgets_content = self.servers_list.currentItem().text()
-            delay, meanDelay = clash_restful.ApiRequest.speed(context_menu_list_widgets_content)
+            delay, meanDelay = clash_restful_requests.ApiRequest.speed(context_menu_list_widgets_content)
             print("22222313131313313131313", delay, meanDelay)
 
             select_item = self.servers_list.selectedItems()
@@ -156,10 +157,97 @@ class Window(QWidget):
                 print(i.text())
                 i.setText(i.text() + ' (%sms)' % delay)
 
-    # TODO
-    def all_proxies_delay(self):
-        pass
 
+    # def all_proxies_delay(self):
+    #     proxies_items_in_qlist = []
+    #     for index in range(self.servers_list.count()):
+
+    #         delay_value, mean_delay_value = clash_restful.ApiRequest.speed(server_name=self.servers_list.item(index).text())
+    #         print(type(self.servers_list.item(index).text()), '11111111111112gggggggggggggggggggg')
+    #         delay_and_name_in_list = '%s <font color="red"> %s</font>' % (self.servers_list.item(index).text(), delay_value) 
+    #         proxies_items_in_qlist.append(delay_and_name_in_list)
+    #         self.servers_list.item(index).setText(proxies_items_in_qlist[index])
+    #     # print(proxies_items_in_qlist)
+
+
+    # def all_proxies_delay_v2(self):
+
+    #     for index in range(self.servers_list.count()):
+
+    #         try:
+    #             delay_value, mean_delay_value = clash_restful.ApiRequest.speed(server_name=self.servers_list.item(index).text())
+    #             print(type(self.servers_list.item(index).text()), '11111111111112gggggggggggggggggggg')
+    #             delay_and_name_string = '%s <font color="red"> (%s ms)</font>' % (self.servers_list.item(index).text(), delay_value) 
+    #             delay_and_name_string_label = QLabel()
+    #             delay_and_name_string_label.setText(delay_and_name_string)
+    #             item_in_server_list = QListWidgetItem(self.servers_list)
+    #             self.servers_list.addItem(item_in_server_list)
+    #             self.servers_list.setItemWidget(item_in_server_list, delay_and_name_string_label)
+
+    #         except:
+    #             delay_and_name_string = '%s <font color="red"> %d ms</font>' % (self.servers_list.item(index).text(), -1) 
+    #             delay_and_name_string_label = QLabel()
+    #             delay_and_name_string_label.setText(delay_and_name_string)
+    #             item_in_server_list = QListWidgetItem(self.servers_list)
+    #             self.servers_list.addItem(item_in_server_list)
+    #             self.servers_list.setItemWidget(item_in_server_list, delay_and_name_string_label)
+
+    #     # self.servers_list.clear()
+
+
+    def all_proxies_delay_v3(self):
+
+        delay_list = []
+
+        for index in range(self.servers_list.count()):
+            delay_list.append(self.servers_list.item(index).text())
+
+        self.servers_list.clear()
+
+
+
+
+        for server_text_string in delay_list:
+
+            try:
+                delay_value, mean_delay_value = clash_restful.ApiRequest.speed(server_name=server_text_string)
+                print(type(server_text_string), '11111111111112gggggggggggggggggggg')
+                delay_and_name_string = '%s <font color="red"> (%s ms)</font>' % (server_text_string, delay_value) 
+                delay_and_name_string_label = QLabel()
+                delay_and_name_string_label.setText(delay_and_name_string)
+                item_in_server_list = QListWidgetItem(self.servers_list)
+                self.servers_list.addItem(item_in_server_list)
+                self.servers_list.setItemWidget(item_in_server_list, delay_and_name_string_label)
+
+            except:
+                delay_and_name_string = '%s <font color="red"> %s</font>' % (server_text_string, "请求超时") 
+                delay_and_name_string_label = QLabel()
+                delay_and_name_string_label.setText(delay_and_name_string)
+                item_in_server_list = QListWidgetItem(self.servers_list)
+                self.servers_list.addItem(item_in_server_list)
+                self.servers_list.setItemWidget(item_in_server_list, delay_and_name_string_label)
+
+        
+
+        # for index in range(self.servers_list.count()):
+
+        #     try:
+        #         delay_value, mean_delay_value = clash_restful.ApiRequest.speed(server_name=self.servers_list.item(index).text())
+        #         print(type(self.servers_list.item(index).text()), '11111111111112gggggggggggggggggggg')
+        #         delay_and_name_string = '%s <font color="red"> (%s ms)</font>' % (self.servers_list.item(index).text(), delay_value) 
+        #         delay_and_name_string_label = QLabel()
+        #         delay_and_name_string_label.setText(delay_and_name_string)
+        #         item_in_server_list = QListWidgetItem(self.servers_list)
+        #         self.servers_list.addItem(item_in_server_list)
+        #         self.servers_list.setItemWidget(item_in_server_list, delay_and_name_string_label)
+
+        #     except:
+        #         delay_and_name_string = '%s <font color="red"> %d ms</font>' % (self.servers_list.item(index).text(), -1) 
+        #         delay_and_name_string_label = QLabel()
+        #         delay_and_name_string_label.setText(delay_and_name_string)
+        #         item_in_server_list = QListWidgetItem(self.servers_list)
+        #         self.servers_list.addItem(item_in_server_list)
+        #         self.servers_list.setItemWidget(item_in_server_list, delay_and_name_string_label)
 
 
 
@@ -369,6 +457,8 @@ class SubscribeInfoWindow(QWidget):
         subscribe_layout.addWidget(self.subscribe_list)
         subscribe_layout.addWidget(self.update_subs)
 
+        self.update_subs.clicked.connect(self.update_all)
+
     def add_subscribe_name_and_link(self):
 
         sub_name = self.subscribe_name_textbox.text()
@@ -392,8 +482,8 @@ class SubscribeInfoWindow(QWidget):
 
         self.subscribe_link_textbox.clear()
         self.subscribe_name_textbox.clear()
-
-
+        self.subscribe_list.clear()
+        self.subscribe_list.addItems(subscribe_json.read_subscribe_json())
     def subscribe_right_click_menu(self, point):
 
         subscribe_pop_menu = QMenu()
@@ -412,19 +502,19 @@ class SubscribeInfoWindow(QWidget):
 
 
 
-
         elif user_choice_in_subscribe_context_menu == delete_subscribe:
-            context_menu_list_widgets_content = self.servers_list.currentItem().text()
-            delay, meanDelay = clash_restful.ApiRequest.speed(context_menu_list_widgets_content)
-            print("22222313131313313131313", delay, meanDelay)
+            subscribe_context_menu_combobox_index = self.subscribe_list.currentRow()
+            print(subscribe_context_menu_combobox_index)
+            subscribe_file_name = subscribe_json.read_subscribe_json_tuple_list()[subscribe_context_menu_combobox_index][0]
+            print("11112222121212", subscribe_file_name, type(subscribe_file_name))
+            subscribe_json.delete_json_key_value(key_name=subscribe_file_name)
+            # curItem = self.listWidget.currentItem()
+            # self.listWidget.removeItemWidget(curItem)
+            del_row = self.subscribe_list.currentRow()
+            self.subscribe_list.takeItem(del_row)
 
-            select_item = self.servers_list.selectedItems()
-            for i in select_item:
-                print(i.text())
-                i.setText(i.text() + ' (%sms)' % delay)
 
-
-        if user_choice_in_subscribe_context_menu == upgrade_current_subscribe:
+        elif user_choice_in_subscribe_context_menu == upgrade_current_subscribe:
             subscribe_context_menu_combobox_index = self.subscribe_list.currentRow()
             print(subscribe_context_menu_combobox_index)
             save_file_name = subscribe_json.read_subscribe_json_tuple_list()[subscribe_context_menu_combobox_index][0]
@@ -433,6 +523,14 @@ class SubscribeInfoWindow(QWidget):
             subscribe_file_operation.ActivateSubscribe().download_subs(link=subscribe_link, saving_name=save_file_name)
 
 
+    def update_all(self):
+        subscribe_num = self.subscribe_list.count()
+        print("how many", subscribe_num)
+        for i in range(subscribe_num):
+            save_file_name = subscribe_json.read_subscribe_json_tuple_list()[i][0]
+            subscribe_link = subscribe_json.read_subscribe_json_tuple_list()[i][1]
+            # print("123aaaaa2222", subscribe_file_name)
+            subscribe_file_operation.ActivateSubscribe().download_subs(link=subscribe_link, saving_name=save_file_name)
 
 
 
