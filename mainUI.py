@@ -1,4 +1,4 @@
-import sys, write_log, clash_restful, clash_restful_requests, proxies_json_reader, os, time, json, subscribe_json, subscribe_file_operation, change_system_proxy_settings, group_combobox_list_v2
+import sys, write_log, clash_restful, clash_restful_requests, proxies_json_reader, os, guiConfig, time, json, subscribe_json, subscribe_file_operation, change_system_proxy_settings, group_combobox_list_v2
 from PyQt5 import QtCore, QtGui, QtWebSockets, QtNetwork
 from PyQt5.QtCore import Qt, QProcess
 from PyQt5.QtWidgets import (
@@ -15,6 +15,7 @@ from PyQt5.QtWidgets import (
     QTableView,
     QListWidget,
     QPushButton,
+    QGridLayout,
     QVBoxLayout,
     QHBoxLayout,
     QTextBrowser,
@@ -30,14 +31,16 @@ class Window(QWidget):
 
     def __init__(self):
 
-        super().__init__()
-
-        self.setWindowIcon(QtGui.QIcon('logo.png'))
-
         self.p_clash = QProcess()
-        self.p_clash.start("./clash_bin/clash-linux-amd64-v3", ['-d', './clash_bin'])
+        # self.p_clash.start("./clash_bin/clash-linux-amd64-v3", ['-d', './clash_bin'])
+        self.p_clash.start("%s/clash_bin/mihomo-linux-amd64-compatible" % guiConfig.CURRENT_PATH, ['-d', '%s/clash_bin' % guiConfig.CURRENT_PATH])
+        
 
         change_system_proxy_settings.ChangeSystemProxiesSetting().run()
+        super().__init__()
+        
+        self.setWindowIcon(QtGui.QIcon('%s/logo.png' % guiConfig.CURRENT_PATH))
+
         self.setWindowTitle("PyV2clash")
         global_layout = QHBoxLayout()
         self.setLayout(global_layout)
@@ -71,6 +74,7 @@ class Window(QWidget):
         self.subscribe_button.clicked.connect(self.subscribe_window)
 
         self.providers_combo_box.addItems(list(group_combobox_list_v2.get_providers_info().keys()))
+
         self.provider_combo_box_current_text = str(self.providers_combo_box.currentText())
         # servers_show_in_Qlist = proxies_json_reader.get_server_list_in_provider_group(provider_combo_box_current_text)
 
@@ -421,7 +425,17 @@ class SubscribeInfoWindow(QWidget):
         self.setWindowTitle("订阅")
         self.setFixedSize(800, 600)
         subscribe_layout = QVBoxLayout()
-        # add_sub_layout = QVBoxLayout()
+        sub_type = QGridLayout()
+
+        self.sub_type_label = QLabel(text="订阅类型：")
+        self.sub_type_combobox = QComboBox()
+        self.sub_type_combobox.addItems(['clash', 'singbox', 'v2ray'])  
+
+        sub_type.addWidget(self.sub_type_label)
+
+        sub_type.addWidget(self.sub_type_combobox)
+
+        subscribe_layout.addLayout(sub_type)
 
         self.setLayout(subscribe_layout)
         self.subscribe_name_label = QLabel(text='订阅名称：')
@@ -536,6 +550,8 @@ class SubscribeInfoWindow(QWidget):
 
 if __name__ == "__main__":
     change_system_proxy_settings.ChangeSystemProxiesSetting().recover()
+
+
     app = QApplication(sys.argv)
     window = Window()
 
