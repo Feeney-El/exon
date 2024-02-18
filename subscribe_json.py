@@ -28,7 +28,9 @@ def write_json(group_name='345', group_link=''):
 
 def read_subscribe_json(file_name="subscribe_json.json") -> list:
 
-    subscribe_dict = json.load(open(file_name))
+    # subscribe_dict = json.load(open(file_name))
+    with open('%s' % file_name, 'r') as f:
+        subscribe_dict = json.load(f)
     tuple_items = subscribe_dict.items()
     print(list(tuple_items))
 
