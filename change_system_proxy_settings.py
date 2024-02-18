@@ -18,7 +18,7 @@ class ChangeSystemProxiesSetting():
         subprocess.run(['gsettings'
                            , 'set'
                            , 'org.gnome.system.proxy.ftp'
-                           , 'host', 'localhost'
+                           , 'host', '127.0.0.1'
                         ])
 
         subprocess.run(['gsettings'
@@ -31,14 +31,14 @@ class ChangeSystemProxiesSetting():
         subprocess.run(['gsettings'
                            , 'set'
                            , 'org.gnome.system.proxy.socks'
-                           , 'host', 'localhost'
+                           , 'host', '127.0.0.1'
                         # , 'port', '8979'
                         ])
 
         subprocess.run(['gsettings'
                            , 'set'
                            , 'org.gnome.system.proxy.socks'
-                        # , 'host', 'localhost'
+                        # , 'host', '127.0.0.1'
                            , 'port', '7891'
                         ])
 
@@ -46,7 +46,7 @@ class ChangeSystemProxiesSetting():
         subprocess.run(['gsettings'
                            , 'set'
                            , 'org.gnome.system.proxy.http'
-                           , 'host', 'localhost'
+                           , 'host', '127.0.0.1'
                         ])
 
         subprocess.run(['gsettings'
@@ -59,7 +59,7 @@ class ChangeSystemProxiesSetting():
         subprocess.run(['gsettings'
                            , 'set'
                            , 'org.gnome.system.proxy.https'
-                           , 'host', 'localhost'
+                           , 'host', '127.0.0.1'
                         ])
 
         subprocess.run(['gsettings'
