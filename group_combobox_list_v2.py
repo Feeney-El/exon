@@ -1,5 +1,5 @@
-import urllib.request, json, logging
-
+import urllib.request, json, logging, requests
+import time
 
 def get_providers_info(port=9090) -> dict:
 
@@ -9,10 +9,14 @@ def get_providers_info(port=9090) -> dict:
                         , format='%(asctime)s  %(filename)s  %(funcName)s  %(levelname)s  %(message)s'
                         , datefmt='%Y-%m-%d %H:%M:%S')
 
-    req = urllib.request.Request(url='http://localhost:%d/proxies' % port
+
+    time.sleep(0.2)
+    req = urllib.request.Request(url='http://127.0.0.1:%d/proxies' % port
                                  , method='GET')
 
     f = urllib.request.urlopen(req)
+
+    
 
     proxies = f.read().decode('utf8')
     print(f.status)
