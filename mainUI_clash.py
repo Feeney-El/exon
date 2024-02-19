@@ -1,4 +1,4 @@
-import sys, write_log, clash_restful, clash_restful_requests, proxies_json_reader, os, guiConfig, time, json, subscribe_json, subscribe_file_operation, change_system_proxy_settings, group_combobox_list_v2
+import sys, write_log, clash_restful, clash_restful_requests, proxies_json_reader, os, gui_constants, time, json, subscribe_json, subscribe_file_operation, change_system_proxy_settings, group_combobox_list_v2
 from PyQt5 import QtCore, QtGui, QtWebSockets, QtNetwork
 from PyQt5.QtCore import Qt, QProcess
 from PyQt5.QtWidgets import (
@@ -33,13 +33,13 @@ class Window(QWidget):
 
         self.p_clash = QProcess()
         # self.p_clash.start("./clash_bin/clash-linux-amd64-v3", ['-d', './clash_bin'])
-        self.p_clash.start("%s/clash_bin/mihomo-linux-amd64-compatible" % guiConfig.CURRENT_PATH, ['-d', '%s/clash_bin' % guiConfig.CURRENT_PATH])
+        self.p_clash.start("%s/clash_bin/mihomo-linux-amd64-compatible" % gui_constants.CURRENT_PATH, ['-d', '%s/clash_bin' % gui_constants.CURRENT_PATH])
         
 
         change_system_proxy_settings.ChangeSystemProxiesSetting().run()
         super().__init__()
         
-        self.setWindowIcon(QtGui.QIcon('%s/logo.png' % guiConfig.CURRENT_PATH))
+        self.setWindowIcon(QtGui.QIcon('%s/logo.png' % gui_constants.CURRENT_PATH))
 
         self.setWindowTitle("PyV2clash")
         global_layout = QHBoxLayout()
@@ -52,6 +52,9 @@ class Window(QWidget):
         global_layout.addLayout(button_layout)
 
         self.providers_combo_box = QComboBox()
+        self.change_client_type = QPushButton(text="切换至其他客户端（当前为clash）")
+        self.change_client_type.clicked.connect(self.change_client_type_msg_function)
+        self.msg_change_client = QMessageBox()
 
 
         self.group_type = QLabel(text='')
@@ -109,6 +112,8 @@ class Window(QWidget):
         self.group_type.setText(group_combobox_list_v2.get_providers_info()[self.providers_combo_box.currentText()])
         self.group_type.setAlignment(Qt.AlignCenter)
 
+        list_layout.addWidget(self.change_client_type)
+
     def refresh_group_label(self):
         sel_option = self.providers_combo_box.currentText()
         # self.group_type.clear()
@@ -153,8 +158,8 @@ class Window(QWidget):
 
         elif user_choice_in_context_menu == see_see_speed:
             context_menu_list_widgets_content = self.servers_list.currentItem().text()
-            delay, meanDelay = clash_restful_requests.ApiRequest.speed(context_menu_list_widgets_content)
-            print("22222313131313313131313", delay, meanDelay)
+            delay = clash_restful_requests.ApiRequest.speed(context_menu_list_widgets_content)
+            print("22222313131313313131313", delay)
 
             select_item = self.servers_list.selectedItems()
             for i in select_item:
@@ -209,12 +214,11 @@ class Window(QWidget):
         self.servers_list.clear()
 
 
-
-
         for server_text_string in delay_list:
-
+            
+            
             try:
-                delay_value, mean_delay_value = clash_restful.ApiRequest.speed(server_name=server_text_string)
+                delay_value = clash_restful.ApiRequest.speed(server_name=server_text_string)
                 print(type(server_text_string), '11111111111112gggggggggggggggggggg')
                 delay_and_name_string = '%s <font color="red"> (%s ms)</font>' % (server_text_string, delay_value) 
                 delay_and_name_string_label = QLabel()
@@ -255,6 +259,33 @@ class Window(QWidget):
 
 
 
+    def change_client_type_msg_function(self):
+
+        
+        self.msg_change_client.setIcon(QMessageBox.Information)
+        self.msg_change_client.setText("改变客户端, 点击按钮后即可保存，下次启动将直接一对应的客户端启动。")
+
+        self.msg_change_client.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
+        self.button_keep_current_client = self.msg_change_client.button(QMessageBox.Yes)
+        self.button_keep_current_client.setText("保持当前客户端（当前为clash）")
+        self.button_change_client_singbox = self.msg_change_client.button(QMessageBox.No)
+        self.button_change_client_singbox.setText("切换为singbox")
+
+        self.button_change_client_v2ray = self.msg_change_client.addButton("切换为v2ray", QMessageBox.YesRole)
+
+        self.button_change_client_singbox.clicked.connect(self.singbox_msg_button)
+
+
+        self.msg_change_client.setWindowTitle("提示")
+        self.msg_change_client.exec_()
+
+    def singbox_msg_button(self):
+        singbox_dict = {"client" : "singbox"}
+        with open(gui_constants.CURRENT_PATH + "/gui_configs/client_config.json", 'w') as f:
+            json.dump(singbox_dict, f)
+
+
+
     def setting_window(self):
         self.w = SettingWindow()
 
@@ -281,6 +312,7 @@ class Window(QWidget):
         change_system_proxy_settings.ChangeSystemProxiesSetting().recover()
         self.p_clash.kill()
 
+        
 
 class SettingWindow(QWidget):
 
