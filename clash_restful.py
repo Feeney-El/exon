@@ -19,7 +19,7 @@ class ApiRequest():
         print(f.status)
         print(json.loads(speed_dict))
         print(type(json.loads(speed_dict)))
-        return json.loads(speed_dict)['delay'], json.loads(speed_dict)['meanDelay']
+        return json.loads(speed_dict)['delay']
 
 
     def get_providers_info(port=9090):
