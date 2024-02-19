@@ -4,7 +4,7 @@ import urllib.request
 
 class ApiRequest():
 
-    def speed(server_name='Hong Kong-09') -> tuple:
+    def speed(server_name='Hong Kong-09') -> int:
 
 
         server_name_url_encode = urllib.parse.quote(server_name)
@@ -18,10 +18,10 @@ class ApiRequest():
         # f.encoding()
         # speed_dict = f.read().decode('utf8')
         speed_dict = f.text
-        print(f.status)
+        # print(f.status)
         print(json.loads(speed_dict))
         print(type(json.loads(speed_dict)))
-        return json.loads(speed_dict)['delay'], json.loads(speed_dict)['meanDelay']
+        return json.loads(speed_dict)['delay']
 
 
     # def get_providers_info(port=9090):
